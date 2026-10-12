@@ -1,0 +1,591 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>RED FINANCE | Controle Empresarial</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+
+    <div class="layout">
+
+        <!-- MENU LATERAL -->
+        <aside class="sidebar">
+
+            <div class="logo">
+                <img src="fotos/Logo Financeiro com Crescimento e Controle.png" alt="Logo" class="logo-icon">
+
+                <div>
+                    <h2>RED<span>FINANCE</span></h2>
+                    <small>GESTÃO EMPRESARIAL</small>
+                </div>
+            </div>
+
+            <div class="menu-label">MENU PRINCIPAL</div>
+
+            <nav class="menu">
+
+                <a href="#dashboard" class="menu-item active">
+                    <span>▦</span>
+                    Dashboard
+                </a>
+
+                <a href="#movimentacoes" class="menu-item">
+                    <span>⇄</span>
+                    Movimentações
+                </a>
+
+                <a href="#relatorios" class="menu-item">
+                    <span>▤</span>
+                    Relatórios
+                </a>
+
+                <a href="#comparacao" class="menu-item">
+                    <span>⇅</span>
+                    Comparar meses
+                </a>
+
+            </nav>
+
+            <div class="sidebar-bottom">
+                <div class="status-dot"></div>
+
+                <div>
+                    <strong>Sistema ativo</strong>
+                    <small>Seus dados estão no navegador</small>
+                </div>
+            </div>
+
+        </aside>
+
+        <!-- CONTEÚDO PRINCIPAL -->
+        <main class="main-content">
+
+            <header class="topbar">
+
+                <div>
+                    <p class="eyebrow">GESTÃO FINANCEIRA</p>
+                    <h1>Visão geral</h1>
+                    <p class="subtitle">
+                        Acompanhe a saúde financeira da sua empresa.
+                    </p>
+                </div>
+
+                <div class="topbar-right">
+
+                    <div class="current-date" id="currentDate">
+                        Carregando data...
+                    </div>
+
+                    <button class="btn-primary" id="openModal">
+                        <span>+</span> Novo lançamento
+                    </button>
+
+                </div>
+
+            </header>
+
+            <!-- DASHBOARD -->
+            <section id="dashboard">
+
+                <div class="section-heading">
+                    <div>
+                        <h2>Resumo financeiro</h2>
+                        <p>Indicadores do período selecionado.</p>
+                    </div>
+
+                    <div class="period-control">
+                        <label for="dashboardMonth">Mês:</label>
+                        <input type="month" id="dashboardMonth">
+                    </div>
+                </div>
+
+                <!-- CARDS -->
+                <div class="stats-grid">
+
+                    <article class="stat-card balance-card">
+
+                        <div class="stat-top">
+                            <span>Saldo atual</span>
+                            <span class="stat-icon">R$</span>
+                        </div>
+
+                        <h2 id="balanceValue">R$ 0,00</h2>
+
+                        <p>Receitas menos despesas</p>
+
+                        <div class="progress-track">
+                            <div class="progress-fill" id="balanceProgress"></div>
+                        </div>
+
+                    </article>
+
+                    <article class="stat-card">
+
+                        <div class="stat-top">
+                            <span>Receitas do mês</span>
+                            <span class="stat-icon green">↗</span>
+                        </div>
+
+                        <h2 id="incomeValue">R$ 0,00</h2>
+
+                        <p class="stat-description">
+                            Total de entradas financeiras
+                        </p>
+
+                        <span class="stat-tag positive">ENTRADAS</span>
+
+                    </article>
+
+                    <article class="stat-card">
+
+                        <div class="stat-top">
+                            <span>Despesas do mês</span>
+                            <span class="stat-icon red">↘</span>
+                        </div>
+
+                        <h2 id="expenseValue">R$ 0,00</h2>
+
+                        <p class="stat-description">
+                            Total de saídas financeiras
+                        </p>
+
+                        <span class="stat-tag negative">SAÍDAS</span>
+
+                    </article>
+
+                    <article class="stat-card">
+
+                        <div class="stat-top">
+                            <span>Resultado mensal</span>
+                            <span class="stat-icon">◈</span>
+                        </div>
+
+                        <h2 id="resultValue">R$ 0,00</h2>
+
+                        <p class="stat-description">
+                            Receitas menos despesas do mês
+                        </p>
+
+                        <span class="stat-tag" id="resultTag">
+                            RESULTADO
+                        </span>
+
+                    </article>
+
+                </div>
+
+                <!-- GRÁFICOS -->
+                <div class="charts-grid">
+
+                    <article class="panel chart-panel">
+
+                        <div class="panel-heading">
+                            <div>
+                                <h3>Fluxo financeiro</h3>
+                                <p>Receitas e despesas por dia do mês.</p>
+                            </div>
+
+                            <span class="live-badge">● ATUALIZADO</span>
+                        </div>
+
+                        <div class="chart-container">
+                            <canvas id="flowChart"></canvas>
+                        </div>
+
+                    </article>
+
+                    <article class="panel chart-panel">
+
+                        <div class="panel-heading">
+                            <div>
+                                <h3>Despesas por categoria</h3>
+                                <p>Distribuição dos gastos mensais.</p>
+                            </div>
+                        </div>
+
+                        <div class="chart-container doughnut-container">
+                            <canvas id="categoryChart"></canvas>
+                        </div>
+
+                    </article>
+
+                </div>
+
+            </section>
+
+            <!-- MOVIMENTAÇÕES -->
+            <section id="movimentacoes" class="content-section">
+
+                <div class="section-heading">
+                    <div>
+                        <h2>Movimentações financeiras</h2>
+                        <p>Consulte e gerencie os lançamentos da empresa.</p>
+                    </div>
+
+                    <button class="btn-secondary" id="exportCsv">
+                        ↓ Exportar CSV
+                    </button>
+                </div>
+
+                <!-- FILTROS -->
+                <div class="panel filters-panel">
+
+                    <div class="filter-field search-field">
+                        <label for="searchInput">Pesquisar</label>
+
+                        <input
+                            type="search"
+                            id="searchInput"
+                            placeholder="Buscar descrição..."
+                        >
+                    </div>
+
+                    <div class="filter-field">
+                        <label for="filterType">Tipo</label>
+
+                        <select id="filterType">
+                            <option value="todos">Todos</option>
+                            <option value="receita">Receitas</option>
+                            <option value="despesa">Despesas</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-field">
+                        <label for="filterCategory">Categoria</label>
+
+                        <select id="filterCategory">
+                            <option value="todas">Todas</option>
+                            <option value="Vendas">Vendas</option>
+                            <option value="Serviços">Serviços</option>
+                            <option value="Salários">Salários</option>
+                            <option value="Aluguel">Aluguel</option>
+                            <option value="Energia">Energia</option>
+                            <option value="Internet">Internet</option>
+                            <option value="Impostos">Impostos</option>
+                            <option value="Marketing">Marketing</option>
+                            <option value="Transporte">Transporte</option>
+                            <option value="Equipamentos">Equipamentos</option>
+                            <option value="Outros">Outros</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-field">
+                        <label for="startDate">Data inicial</label>
+                        <input type="date" id="startDate">
+                    </div>
+
+                    <div class="filter-field">
+                        <label for="endDate">Data final</label>
+                        <input type="date" id="endDate">
+                    </div>
+
+                    <button class="btn-secondary clear-filters" id="clearFilters">
+                        Limpar
+                    </button>
+
+                </div>
+
+                <!-- TABELA -->
+                <div class="panel table-panel">
+
+                    <div class="table-header">
+                        <div>
+                            <h3>Últimos lançamentos</h3>
+                            <p id="transactionCount">0 movimentações</p>
+                        </div>
+                    </div>
+
+                    <div class="table-wrapper">
+
+                        <table>
+
+                            <thead>
+                                <tr>
+                                    <th>DESCRIÇÃO</th>
+                                    <th>CATEGORIA</th>
+                                    <th>DATA</th>
+                                    <th>TIPO</th>
+                                    <th>VALOR</th>
+                                    <th>AÇÃO</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="transactionTable"></tbody>
+
+                        </table>
+
+                    </div>
+
+                    <div class="empty-state" id="emptyState">
+                        <span>◈</span>
+                        <h3>Nenhuma movimentação encontrada</h3>
+                        <p>Cadastre um lançamento ou altere os filtros.</p>
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- RELATÓRIO MENSAL -->
+            <section id="relatorios" class="content-section">
+
+                <div class="section-heading">
+                    <div>
+                        <h2>Relatório mensal</h2>
+                        <p>Resumo consolidado do mês escolhido.</p>
+                    </div>
+                </div>
+
+                <div class="panel report-panel">
+
+                    <div class="report-toolbar">
+                        <div class="filter-field">
+                            <label for="reportMonth">Mês do relatório</label>
+                            <input type="month" id="reportMonth">
+                        </div>
+
+                        <button class="btn-secondary" id="exportMonthlyCsv">
+                            ↓ Exportar relatório mensal
+                        </button>
+                    </div>
+
+                    <div class="report-grid">
+
+                        <div class="report-item">
+                            <span>Total de receitas</span>
+                            <strong class="green-text" id="reportIncome">
+                                R$ 0,00
+                            </strong>
+                        </div>
+
+                        <div class="report-item">
+                            <span>Total de despesas</span>
+                            <strong class="red-text" id="reportExpense">
+                                R$ 0,00
+                            </strong>
+                        </div>
+
+                        <div class="report-item">
+                            <span>Resultado do mês</span>
+                            <strong id="reportResult">R$ 0,00</strong>
+                        </div>
+
+                        <div class="report-item">
+                            <span>Quantidade de lançamentos</span>
+                            <strong id="reportCount">0</strong>
+                        </div>
+
+                    </div>
+
+                    <div class="report-message" id="reportMessage">
+                        Selecione um mês para consultar os resultados.
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- COMPARAÇÃO DE MESES -->
+            <section id="comparacao" class="content-section">
+
+                <div class="section-heading">
+                    <div>
+                        <h2>Comparação de despesas</h2>
+                        <p>Descubra se os gastos aumentaram ou diminuíram.</p>
+                    </div>
+                </div>
+
+                <div class="panel comparison-panel">
+
+                    <div class="comparison-filters">
+
+                        <div class="filter-field">
+                            <label for="monthA">Primeiro mês</label>
+                            <input type="month" id="monthA">
+                        </div>
+
+                        <div class="comparison-vs">VS</div>
+
+                        <div class="filter-field">
+                            <label for="monthB">Segundo mês</label>
+                            <input type="month" id="monthB">
+                        </div>
+
+                        <button class="btn-primary" id="compareMonths">
+                            Comparar meses
+                        </button>
+
+                    </div>
+
+                    <div id="comparisonResult" class="comparison-result">
+
+                        <div class="comparison-placeholder">
+                            <span>⇅</span>
+                            <p>Selecione dois meses para comparar as despesas.</p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            <footer class="footer">
+                <span>RED FINANCE</span>
+                <span>Controle inteligente para sua empresa.</span>
+            </footer>
+
+        </main>
+
+    </div>
+
+    <!-- MODAL DE NOVO LANÇAMENTO -->
+    <div class="modal-overlay" id="transactionModal">
+
+        <div class="modal">
+
+            <div class="modal-header">
+
+                <div>
+                    <p class="eyebrow">GESTÃO FINANCEIRA</p>
+                    <h2>Novo lançamento</h2>
+                    <p>Preencha os dados da movimentação.</p>
+                </div>
+
+                <button class="close-modal" id="closeModal" aria-label="Fechar">
+                    ×
+                </button>
+
+            </div>
+
+            <form id="transactionForm">
+
+                <div class="type-selector">
+
+                    <label class="type-option selected" id="incomeOption">
+                        <input
+                            type="radio"
+                            name="type"
+                            value="receita"
+                            checked
+                        >
+                        <span>↗</span>
+                        Receita
+                    </label>
+
+                    <label class="type-option" id="expenseOption">
+                        <input
+                            type="radio"
+                            name="type"
+                            value="despesa"
+                        >
+                        <span>↘</span>
+                        Despesa
+                    </label>
+
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Descrição</label>
+
+                    <input
+                        type="text"
+                        id="description"
+                        placeholder="Ex.: Venda de produtos"
+                        maxlength="100"
+                        required
+                    >
+                </div>
+
+                <div class="form-row">
+
+                    <div class="form-group">
+                        <label for="amount">Valor (R$)</label>
+
+                        <input
+                            type="number"
+                            id="amount"
+                            placeholder="0,00"
+                            min="0.01"
+                            max="1000000000000"
+                            step="0.01"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="date">Data</label>
+
+                        <input type="date" id="date" required>
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <label for="category">Categoria</label>
+
+                    <select id="category" required>
+                        <option value="">Selecione uma categoria</option>
+                        <option value="Vendas">Vendas</option>
+                        <option value="Serviços">Serviços</option>
+                        <option value="Salários">Salários</option>
+                        <option value="Aluguel">Aluguel</option>
+                        <option value="Energia">Energia</option>
+                        <option value="Internet">Internet</option>
+                        <option value="Impostos">Impostos</option>
+                        <option value="Marketing">Marketing</option>
+                        <option value="Transporte">Transporte</option>
+                        <option value="Equipamentos">Equipamentos</option>
+                        <option value="Outros">Outros</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="notes">Observações (opcional)</label>
+
+                    <textarea
+                        id="notes"
+                        placeholder="Informações adicionais..."
+                        rows="3"
+                        maxlength="500"
+                    ></textarea>
+                </div>
+
+                <div class="form-actions">
+
+                    <button
+                        type="button"
+                        class="btn-secondary"
+                        id="cancelModal"
+                    >
+                        Cancelar
+                    </button>
+
+                    <button type="submit" class="btn-primary">
+                        Salvar lançamento
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <!-- NOTIFICAÇÕES -->
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+</body>
+
+</html>
